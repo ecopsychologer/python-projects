@@ -1,49 +1,101 @@
 num = input("Enter a roman numeral or an integer: ")
-ch1 = num[0]
-ch1 = int(ch1)
+if num.isdigit():
+    ch1 = int(num[0])
 roman1 = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 
 
-def romify(num1):
+def romify1(num1):
+    return roman1[num1]
+
+
+def romify10(num1):
     num2 = int(num1)
-    if (int(num2) % 10) != 0:
-        num2 = num2 - (num2 % 10.0)
-        print(num2)
-        print(num2 % 10.0)
-    else:
-        num2 = num2 / 10.0
-    x = num2
     numeral = ""
     num1 = num1 % 10
-    print(num2)
-    if num2 <= 3:
-        while x >= 0:
+    num2 = num2 / 10
+    num2 = int(num2)
+    if num2 < 4:
+        while num2 > 0:
             numeral += "X"
-            x = x - 1
-        numeral += roman1[num1]
-    if 3 < num2 <= 4:
+            num2 = num2 - 1
+    if 4 <= num2 < 5:
         numeral = "XL"
-        numeral += roman1[num1]
-    if 4 < num2 <= 8:
+    if 5 <= num2 < 9:
         numeral = "L"
-        x = x - 5
-        while x >= 0:
+        num2 = num2 - 5
+        while num2 > 0:
             numeral += "X"
-            x = x - 1
+            num2 = num2 - 1
         num1 = num1 % 10
-        numeral += roman1[num1]
-    if 8 < num2 <= 9:
+    if 9 <= num2 < 10:
         numeral = "XC"
-        numeral += roman1[num1]
-    if 9 < num2 <= 10:
-        num2 = num2 - 11
-        numeral = "C" + romify(num2)
-    return numeral
-if int(num) > 399 | int(num) == 0:
-    print("ERROR: NUMBER TOO HIGH")
-if (ch1 == 0) | (ch1 == 1) | (ch1 == 2) | (ch1 == 3) | (ch1 == 4) | (ch1 == 5) | (ch1 == 6) | (ch1 == 7) | \
-        (ch1 == 8) | (ch1 == 9):
-    num = int(num)
-    print(romify(num))
+    return numeral + romify1(num1)
+
+
+def romify100(num1):
+    num2 = int(num1)
+    numeral = ""
+    num1 = num1 % 100
+    num2 = num2 / 100
+    num2 = int(num2)
+    if num2 < 4:
+        while num2 > 0:
+            numeral += "C"
+            num2 = num2 - 1
+    if 4 <= num2 < 5:
+        numeral = "CD"
+    if 5 <= num2 < 9:
+        numeral = "D"
+        num2 = num2 - 5
+        while num2 > 0:
+            numeral += "C"
+            num2 = num2 - 1
+        num1 = num1 % 10
+    if 9 <= num2 < 10:
+        numeral = "CM"
+    return numeral + romify10(num1)
+
+
+def romify1000(num1):
+    num2 = int(num1)
+    numeral = ""
+    num1 = num1 % 1000
+    num2 = num2 / 1000
+    num2 = int(num2)
+    if num2 <= 4:
+        while num2 > 0:
+            numeral += "M"
+            num2 = num2 - 1
+    return numeral + romify100(num1)
+
+
+def intify(rom1):
+    rom1 = rom1.upper()
+    num1 = 0
+    while num1 < 5000:
+        rom2 = romify1000(num1)
+        print(rom2 + " ?= " + rom1)
+        if rom1 == rom2:
+            print(rom2 + " = " + rom1)
+            break
+        else:
+            num1 += 1
+            print(num1)
+    return num1
+
+if num.isdigit():
+    if int(num) > 4999:
+        print("ERROR: INPUT NUMBER INVALID")
+        print("Roman Numerals have a maximum value of 4999")
+    else:
+        num = int(num)
+        print(romify1000(num))
+elif num.isalpha():
+    finalnum = intify(num)
+    if int(finalnum) > 4999:
+        print("ERROR: SYNTAX INVALID")
+        print("Your input would be equivalent to " + str(finalnum))
+    else:
+        print(finalnum)
 else:
-    finalNum = int(num)
+    print("ERROR: INPUT INVALID")
